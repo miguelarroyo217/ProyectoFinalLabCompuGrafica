@@ -66,6 +66,10 @@ Model Pueblo;
 Model Arboles;
 Model Voltorb;
 Model Electrode;
+Model Onix;
+Model OnixCabeza;
+Model OnixCuerpo;
+Model OnixCola;
 
 Skybox skyboxDia;
 Skybox skyboxNoche;
@@ -241,7 +245,7 @@ int main()
 
 
 	Prueba = Model();
-	Prueba.LoadModel("Models/Lucario.obj");
+	Prueba.LoadModel("Models/LucarioPrueba2.obj");
 	Pueblo = Model();
 	Pueblo.LoadModel("Models/PuebloCentro.obj");
 	Arboles = Model();
@@ -250,6 +254,14 @@ int main()
 	Voltorb.LoadModel("Models/Voltorb.obj");
 	Electrode = Model();
 	Electrode.LoadModel("Models/Electrode.obj");
+	Onix = Model();
+	Onix.LoadModel("Models/Onix.obj");
+	OnixCabeza = Model();
+	OnixCabeza.LoadModel("Models/CabezaOnix.obj");
+	OnixCuerpo = Model();
+	OnixCuerpo.LoadModel("Models/CuerpoOnix.obj");
+	OnixCola = Model();
+	OnixCola.LoadModel("Models/ColaOnix.obj");
 
 
 	std::vector<std::string> skyboxFacesDia;
@@ -377,14 +389,14 @@ int main()
 		//Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
 
 		//Prueba
-		/*model = glm::mat4(1.0);
+		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
 		//model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
 		modelaux = model;
 		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		//PruebaTexture.UseTexture();
-		Prueba.RenderModel();*/
+		Prueba.RenderModel();
 
 		//Pueblo
 		model = glm::mat4(1.0);
@@ -441,6 +453,41 @@ int main()
 		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Electrode.RenderModel();
+
+		//Onix
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+		//model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Onix.RenderModel();
+
+		//Onix Cabeza
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(10.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+		modelaux = model;
+		//model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		OnixCabeza.RenderModel();
+
+		//Onix Cuerpo
+		model = glm::mat4(1.0);
+		model = modelaux;
+		//model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+		//model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+		//model = glm::rotate(model, 45 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		OnixCuerpo.RenderModel();
+
+		//Onix Cola
+		model = glm::mat4(1.0);
+		model = modelaux;
+		//model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+		//model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+		//model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		OnixCola.RenderModel();
 
 		//Agave ¿qué sucede si lo renderizan antes del coche y de la pista?
 		model = glm::mat4(1.0);
