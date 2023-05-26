@@ -20,6 +20,8 @@ Proyecto Final: Diorama de la Vida Cotidiana (Lucario y Mordecai)
 #include <gtc\type_ptr.hpp>
 //para probar el importer
 //#include<assimp/Importer.hpp>
+#include <ctime>
+#include <iostream>
 
 #include "Window.h"
 #include "Mesh.h"
@@ -27,7 +29,7 @@ Proyecto Final: Diorama de la Vida Cotidiana (Lucario y Mordecai)
 #include "Camera.h"
 #include "Texture.h"
 #include "Sphere.h"
-#include"Model.h"
+#include "Model.h"
 #include "Skybox.h"
 
 //para iluminación
@@ -42,6 +44,10 @@ const float toRadians = 3.14159265f / 180.0f;
 float toffsetu;
 float toffsetv;
 
+//Banderas
+int bandia = 0;
+/*unsigned t0, t1;
+double time;*/
 
 Window mainWindow;
 std::vector<Mesh*> meshList;
@@ -57,8 +63,12 @@ Texture FlechaTexture;
 
 Model Prueba;
 Model Pueblo;
+Model Arboles;
+Model Voltorb;
+Model Electrode;
 
-Skybox skybox;
+Skybox skyboxDia;
+Skybox skyboxNoche;
 
 //materiales
 Material Material_brillante;
@@ -233,18 +243,37 @@ int main()
 	Prueba = Model();
 	Prueba.LoadModel("Models/Lucario.obj");
 	Pueblo = Model();
-	Pueblo.LoadModel("Models/PuebloPrueba.obj");
+	Pueblo.LoadModel("Models/PuebloCentro.obj");
+	Arboles = Model();
+	Arboles.LoadModel("Models/Arboles.obj");
+	Voltorb = Model();
+	Voltorb.LoadModel("Models/Voltorb.obj");
+	Electrode = Model();
+	Electrode.LoadModel("Models/Electrode.obj");
 
 
-	std::vector<std::string> skyboxFaces;
-	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_rt.tga");
-	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_lf.tga");
-	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_dn.tga");
-	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_up.tga");
-	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_bk.tga");
-	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_ft.tga");
+	std::vector<std::string> skyboxFacesDia;
+	
+	skyboxFacesDia.push_back("Textures/Skybox/cupertin-lake_rt.tga");
+	skyboxFacesDia.push_back("Textures/Skybox/cupertin-lake_lf.tga");
+	skyboxFacesDia.push_back("Textures/Skybox/cupertin-lake_dn.tga");
+	skyboxFacesDia.push_back("Textures/Skybox/cupertin-lake_up.tga");
+	skyboxFacesDia.push_back("Textures/Skybox/cupertin-lake_bk.tga");
+	skyboxFacesDia.push_back("Textures/Skybox/cupertin-lake_ft.tga");
 
-	skybox = Skybox(skyboxFaces);
+	std::vector<std::string> skyboxFacesNoche;
+
+	skyboxFacesNoche.push_back("Textures/Skybox/cupertin-lake-night_rt.tga");
+	skyboxFacesNoche.push_back("Textures/Skybox/cupertin-lake-night_lf.tga");
+	skyboxFacesNoche.push_back("Textures/Skybox/cupertin-lake-night_dn.tga");
+	skyboxFacesNoche.push_back("Textures/Skybox/cupertin-lake-night_up.tga");
+	skyboxFacesNoche.push_back("Textures/Skybox/cupertin-lake-night_bk.tga");
+	skyboxFacesNoche.push_back("Textures/Skybox/cupertin-lake-night_ft.tga");
+
+	
+
+	skyboxDia = Skybox(skyboxFacesDia);
+	skyboxNoche = Skybox(skyboxFacesNoche);
 
 	Material_brillante = Material(4.0f, 256);
 	Material_opaco = Material(0.3f, 4);
@@ -286,6 +315,8 @@ int main()
 		deltaTime += (now - lastTime) / limitFPS;
 		lastTime = now;
 
+		//t0 = clock();
+
 
 		//Recibir eventos del usuario
 		glfwPollEvents();
@@ -295,7 +326,13 @@ int main()
 		// Clear the window
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		skybox.DrawSkybox(camera.calculateViewMatrix(), projection);
+		if (mainWindow.getBanDia() == 1) {
+			skyboxDia.DrawSkybox(camera.calculateViewMatrix(), projection);
+		}
+		else {
+			skyboxNoche.DrawSkybox(camera.calculateViewMatrix(), projection);
+		}
+		
 		shaderList[0].UseShader();
 		uniformModel = shaderList[0].GetModelLocation();
 		uniformProjection = shaderList[0].GetProjectionLocation();
@@ -324,9 +361,10 @@ int main()
 		glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f);
 		glm::vec2 toffset = glm::vec2(0.0f, 0.0f);//Se declara al inicio para que las texturas no se muevan
 
+		//Piso
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.0f, -2.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(30.0f, 1.0f, 30.0f));
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(7.0f, 1.0f, 7.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
 		glUniform2fv(uniformTextureOffset, 1, glm::value_ptr(toffset));
@@ -339,23 +377,70 @@ int main()
 		//Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
 
 		//Prueba
-		model = glm::mat4(1.0);
+		/*model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
 		//model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
 		modelaux = model;
 		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		//PruebaTexture.UseTexture();
-		Prueba.RenderModel();
+		Prueba.RenderModel();*/
 
-		//Prueba Pueblo
+		//Pueblo
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
 		//model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
 		//model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		//PruebaTexture.UseTexture();
 		Pueblo.RenderModel();
+
+		//Arboles
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-55.0f, 0.0f, 0.0f));
+		//model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+		//model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Arboles.RenderModel();
+
+		//Arboles
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(59.0f, 0.0f, 0.0f));
+		//model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+		//model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Arboles.RenderModel();
+
+		//Arboles
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(5.0f, 0.0f, 55.0f));
+		//model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Arboles.RenderModel();
+
+		//Arboles
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(5.0f, 0.0f, -59.0f));
+		//model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Arboles.RenderModel();
+
+		//Voltorb
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-25.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+		//model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Voltorb.RenderModel();
+
+		//Electrode
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(25.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Electrode.RenderModel();
 
 		//Agave ¿qué sucede si lo renderizan antes del coche y de la pista?
 		model = glm::mat4(1.0);
@@ -397,7 +482,9 @@ int main()
 		glDisable(GL_BLEND);//Desactiva el blender
 		toffset = glm::vec2(0.0f, 0.0f);
 
-
+		/*t1 = clock();
+		time = (double(t1 - t0) / CLOCKS_PER_SEC);
+		std::cout << "Execution Time: " << time;*/
 
 		glUseProgram(0);
 
