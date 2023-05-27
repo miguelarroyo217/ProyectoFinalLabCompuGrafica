@@ -49,6 +49,11 @@ float movVolOffset;
 int rotVol;
 int rotVolOffset;
 bool arriba;
+float movOnix;
+float movOnixOffset;
+int rotOnix;
+int rotOnixOffset;
+bool avanzaOnix;
 float movLuc;
 float movLucOffset;
 int rotLuc;
@@ -92,6 +97,7 @@ Model Fuente;
 Model Dulceria;
 Model AreaInf;
 
+Model Farola;
 Model CentroPokemon;
 Model Laboratorio;
 Model Gym;
@@ -301,15 +307,17 @@ int main()
 	LucPierIzq = Model();
 	LucPierIzq.LoadModel("Models/LucarioPierIzq.obj");
 	CasaParque = Model();
-	CasaParque.LoadModel("Models/CasaParque.obj");
+	CasaParque.LoadModel("Models/CasaParque.fbx");
 	Fuente = Model();
-	Fuente.LoadModel("Models/FuenteParque.obj");
+	Fuente.LoadModel("Models/FuenteParque.fbx");
 	Dulceria = Model();
-	Dulceria.LoadModel("Models/SnackArea.obj");
+	Dulceria.LoadModel("Models/SnackArea.fbx");
 	AreaInf = Model();
-	AreaInf.LoadModel("Models/AreaInfantil.obj");
+	AreaInf.LoadModel("Models/AreaInfantil.fbx");
 
 	// EDIFICACIONES
+	Farola = Model();
+	Farola.LoadModel("Models/Farola.obj");
 	Laboratorio = Model();
 	Laboratorio.LoadModel("Models/LabPokemon.fbx");
 	CentroPokemon = Model();
@@ -370,7 +378,23 @@ int main()
 		0.0f, 0.0f, 0.0f,
 		0.0f, -1.0f, 0.0f,
 		1.0f, 0.0f, 0.0f,
-		5.0f);
+		30.0f);
+	spotLightCount++;
+
+	spotLights[1] = SpotLight(1.0f, 1.0f, 1.0f,
+		0.0f, 2.0f,
+		0.0f, 0.0f, 0.0f,
+		0.0f, -1.0f, 0.0f,
+		1.0f, 0.0f, 0.0f,
+		30.0f);
+	spotLightCount++;
+
+	spotLights[2] = SpotLight(1.0f, 1.0f, 1.0f,
+		0.0f, 2.0f,
+		0.0f, 0.0f, 0.0f,
+		0.0f, -1.0f, 0.0f,
+		1.0f, 0.0f, 0.0f,
+		30.0f);
 	spotLightCount++;
 
 
@@ -386,6 +410,11 @@ int main()
 	rotVol = 0;
 	rotVolOffset = 5;
 	arriba = false;
+	movOnix = 90.0f;
+	movOnixOffset = 0.5f;
+	rotOnix = 0;
+	rotOnixOffset = 10;
+	avanzaOnix = false;
 	movLuc = 0.0;
 	movLucOffset = 0.1;
 	rotLuc = 0;
@@ -416,6 +445,20 @@ int main()
 			if (movVol < 0.5f && movVol > -0.5f)
 				arriba = false;
 		}
+
+		//Animacion Onix
+		if (movOnix > -85.5f && avanzaOnix == false && mainWindow.getBanOnAnim() == true) {
+			movOnix -= movOnixOffset * deltaTime;
+			rotOnix += rotOnixOffset * deltaTime;
+			if (movOnix > -91.0f && movOnix < -90.0f) {}
+			//avanzaOnix = true;
+		}
+		/*else if (movOnix < 0.5f && avanzaOnix == true && mainWindow.getBanOnAnim() == true) {
+			movOnix += movOnixOffset * deltaTime;
+			rotOnix -= rotVolOffset * deltaTime;
+			if (movOnix < 1.0f && movVol > 0.0f)
+				avanzaOnix = false;
+		}*/
 
 		//Animación Avatar
 		if (rotLuc < 20 && gira == false && mainWindow.getBanOnAnim() == true) {
@@ -457,9 +500,15 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		if (mainWindow.getBanDia() == 1) {
 			skyboxDia.DrawSkybox(camera.calculateViewMatrix(), projection);
+			spotLights[0].SetFlash(glm::vec3(0.0f, 20.0f, -48.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+			spotLights[1].SetFlash(glm::vec3(0.0f, 20.0f, -48.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+			spotLights[2].SetFlash(glm::vec3(0.0f, 20.0f, -48.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 		}
 		else {
 			skyboxNoche.DrawSkybox(camera.calculateViewMatrix(), projection);
+			spotLights[0].SetFlash(glm::vec3(0.0f, 20.0f, -48.0f), glm::vec3(0.0f, -1.0f, 0.0f));
+			spotLights[1].SetFlash(glm::vec3(-48.0f, 20.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f));
+			spotLights[2].SetFlash(glm::vec3(59.0f, 20.0f, 8.0f), glm::vec3(0.0f, -1.0f, 0.0f));
 		}
 		
 		shaderList[0].UseShader();
@@ -508,7 +557,7 @@ int main()
 
 		//Pueblo
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
 		//model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
@@ -546,9 +595,33 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Arboles.RenderModel();
 
+		//Farola1
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.0f, 0.1f, -60.0f));
+		model = glm::scale(model, glm::vec3(4.0f, 4.0f, 4.0f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Farola.RenderModel();
+
+		//Farola2
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-60.0f, 0.1f, 0.0f));
+		model = glm::scale(model, glm::vec3(4.0f, 4.0f, 4.0f));
+		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Farola.RenderModel();
+
+		//Farola3
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(70.0f, 0.1f, 8.0f));
+		model = glm::scale(model, glm::vec3(4.0f, 4.0f, 4.0f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Farola.RenderModel();
+
 		//Voltorb
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-25.0f, movVol, 0.0f));
+		model = glm::translate(model, glm::vec3(-60.0f, movVol, -60.0f));
 		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
 		model = glm::rotate(model, rotVol * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
@@ -556,7 +629,7 @@ int main()
 
 		//Electrode
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(25.0f, movVol, 0.0f));
+		model = glm::translate(model, glm::vec3(60.0f, movVol, -60.0f));
 		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
 		model = glm::rotate(model, 180+rotVol * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
@@ -564,9 +637,10 @@ int main()
 
 		//Onix
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
-		//model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(movOnix, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, rotOnix * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Onix.RenderModel();
 
