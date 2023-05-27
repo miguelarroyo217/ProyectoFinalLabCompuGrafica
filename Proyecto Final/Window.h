@@ -14,6 +14,7 @@ public:
 	GLfloat getXChange();
 	GLfloat getYChange();
 	GLfloat getmuevex() { return muevex; }
+	bool getBanOnAnim() { return BanOnAnim; }
 	int getBanDia() { return BanDia; }
 	bool getShouldClose() {
 		return  glfwWindowShouldClose(mainWindow);}
@@ -32,6 +33,7 @@ private:
 	GLfloat xChange;
 	GLfloat yChange;
 	GLfloat muevex;
+	bool BanOnAnim;
 	int BanDia;
 	bool mouseFirstMoved;
 	static void ManejaTeclado(GLFWwindow* window, int key, int code, int action, int mode);

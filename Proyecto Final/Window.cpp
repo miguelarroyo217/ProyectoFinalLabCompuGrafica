@@ -14,6 +14,7 @@ Window::Window(GLint windowWidth, GLint windowHeight)
 	width = windowWidth;
 	height = windowHeight;
 	muevex = 2.0f;
+	BanOnAnim = false;
 	BanDia = 1;
 	for (size_t i = 0; i < 1024; i++)
 	{
@@ -121,6 +122,15 @@ void Window::ManejaTeclado(GLFWwindow* window, int key, int code, int action, in
 	{
 		theWindow->BanDia = 0;
 	}
+	if (key == GLFW_KEY_O)
+	{
+		theWindow->BanOnAnim = true;
+	}
+	if (key == GLFW_KEY_P)
+	{
+		theWindow->BanOnAnim = false;
+	}
+
 
 
 

@@ -274,21 +274,21 @@ int main()
 
 	// EDIFICACIONES
 	Laboratorio = Model();
-	Laboratorio.LoadModel("Models/LabPokemon.obj");
+	Laboratorio.LoadModel("Models/LabPokemon.fbx");
 	CentroPokemon = Model();
-	CentroPokemon.LoadModel("Models/CentroPokemon.obj");
+	CentroPokemon.LoadModel("Models/CentroPokemon.fbx");
 	Gym = Model();
-	Gym.LoadModel("Models/GYM.obj");
+	Gym.LoadModel("Models/GYM.fbx");
 	Tienda = Model();
-	Tienda.LoadModel("Models/Shop.obj");
+	Tienda.LoadModel("Models/Shop.fbx");
 	Casa = Model();
-	Casa.LoadModel("Models/CasaP.obj");
+	Casa.LoadModel("Models/CasaP.fbx");
 	Casa2 = Model();
-	Casa2.LoadModel("Models/Casa2.obj");
+	Casa2.LoadModel("Models/Casa2.fbx");
 	Torre = Model();
-	Torre.LoadModel("Models/TorreLavanda.obj");
+	Torre.LoadModel("Models/TorreLavanda.fbx");
 	CentroComercial = Model();
-	CentroComercial.LoadModel("Models/CentroComercial.obj");
+	CentroComercial.LoadModel("Models/CentroComercial.fbx");
 
 
 	std::vector<std::string> skyboxFacesDia;
