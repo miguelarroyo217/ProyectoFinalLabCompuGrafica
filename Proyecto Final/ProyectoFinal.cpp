@@ -44,6 +44,18 @@ const float toRadians = 3.14159265f / 180.0f;
 float toffsetu;
 float toffsetv;
 
+float movVol;
+float movVolOffset;
+int rotVol;
+int rotVolOffset;
+bool arriba;
+float movLuc;
+float movLucOffset;
+int rotLuc;
+int rotLucOffset;
+bool avanza;
+bool gira;
+
 //Banderas
 int bandia = 0;
 /*unsigned t0, t1;
@@ -61,15 +73,21 @@ Texture AgaveTexture;
 Texture FlechaTexture;
 
 
-Model Prueba;
 Model Pueblo;
 Model Arboles;
 Model Voltorb;
 Model Electrode;
 Model Onix;
-Model OnixCabeza;
-Model OnixCuerpo;
-Model OnixCola;
+
+//Avatar
+Model LucCuerpo;
+Model LucCabeza;
+Model LucCola;
+Model LucBraDer;
+Model LucBraIzq;
+Model LucPierDer;
+Model LucPierIzq;
+
 
 Model CentroPokemon;
 Model Laboratorio;
@@ -253,8 +271,6 @@ int main()
 	FlechaTexture.LoadTextureA();
 
 
-	Prueba = Model();
-	Prueba.LoadModel("Models/LucarioPrueba2.obj");
 	Pueblo = Model();
 	Pueblo.LoadModel("Models/PuebloCentro.obj");
 	Arboles = Model();
@@ -265,12 +281,22 @@ int main()
 	Electrode.LoadModel("Models/Electrode.obj");
 	Onix = Model();
 	Onix.LoadModel("Models/Onix.obj");
-	OnixCabeza = Model();
-	OnixCabeza.LoadModel("Models/CabezaOnix.obj");
-	OnixCuerpo = Model();
-	OnixCuerpo.LoadModel("Models/CuerpoOnix.obj");
-	OnixCola = Model();
-	OnixCola.LoadModel("Models/ColaOnix.obj");
+
+	//Avatar
+	LucCuerpo = Model();
+	LucCuerpo.LoadModel("Models/LucarioCuerpo.obj");
+	LucCabeza = Model();
+	LucCabeza.LoadModel("Models/LucarioCabeza.obj");
+	LucCola = Model();
+	LucCola.LoadModel("Models/LucarioCola.obj");
+	LucBraDer = Model();
+	LucBraDer.LoadModel("Models/LucarioBraDer.obj");
+	LucBraIzq = Model();
+	LucBraIzq.LoadModel("Models/LucarioBraIzq.obj");
+	LucPierDer = Model();
+	LucPierDer.LoadModel("Models/LucarioPierDer.obj");
+	LucPierIzq = Model();
+	LucPierIzq.LoadModel("Models/LucarioPierIzq.obj");
 
 	// EDIFICACIONES
 	Laboratorio = Model();
@@ -344,7 +370,17 @@ int main()
 	glm::mat4 projection = glm::perspective(45.0f, (GLfloat)mainWindow.getBufferWidth() / mainWindow.getBufferHeight(), 0.1f, 1000.0f);
 	
 	//Inicialización de Variables de Animación
-
+	movVol = 0.0;
+	movVolOffset = 0.1;
+	rotVol = 0;
+	rotVolOffset = 5;
+	arriba = false;
+	movLuc = 0.0;
+	movLucOffset = 0.1;
+	rotLuc = 0;
+	rotLucOffset = 1;
+	avanza = false;
+	gira = false;
 	
 	////Loop mientras no se cierra la ventana
 	while (!mainWindow.getShouldClose())
@@ -356,6 +392,49 @@ int main()
 
 		//t0 = clock();
 
+		//Animación Voltorb y Electrode
+		if (movVol < 10.0f && arriba == false && mainWindow.getBanOnAnim() == true) {
+			movVol += movVolOffset * deltaTime;
+			rotVol += rotVolOffset * deltaTime;
+			if (movVol < 10.5f && movVol > 9.5f)
+				arriba = true;
+		}
+		else if (movVol > 0.0f && arriba == true && mainWindow.getBanOnAnim() == true) {
+			movVol -= movVolOffset * deltaTime;
+			rotVol -= rotVolOffset * deltaTime;
+			if (movVol < 0.5f && movVol > -0.5f)
+				arriba = false;
+		}
+
+		//Animación Avatar
+		if (rotLuc < 20 && gira == false && mainWindow.getBanOnAnim() == true) {
+			rotLuc += movLucOffset * deltaTime;
+			if (rotLuc < 21 && movLuc > 19) {
+				rotLuc -= rotLucOffset * deltaTime;
+				gira = true;
+			}
+		}
+		else if (rotLuc > -20 && gira == true && mainWindow.getBanOnAnim() == true) {
+			rotLuc += movLucOffset * deltaTime;
+		}
+
+		if (movLuc < 100.5f && avanza == false && mainWindow.getBanOnAnim() == true) {
+			movLuc += movLucOffset * deltaTime;
+			//rotLuc += rotLucOffset * deltaTime;
+			if (movLuc < 101.0f && movLuc > 100.0f ) {
+				//rotLuc += rotLucOffset * deltaTime;
+				//avanza = true;
+				//gira = true;
+			}
+		}
+		/*else if (movVol > 0.0f && arriba == true && mainWindow.getBanOnAnim() == true) {
+			movVol -= movVolOffset * deltaTime;
+			rotVol -= rotVolOffset * deltaTime;
+			if (movVol < 0.5f && movVol > -0.5f)
+				arriba = false;
+		}*/
+
+		
 
 		//Recibir eventos del usuario
 		glfwPollEvents();
@@ -396,6 +475,7 @@ int main()
 
 
 		glm::mat4 model(1.0);
+		glm::mat4 modelLuc(1.0);
 		glm::mat4 modelaux(1.0);
 		glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f);
 		glm::vec2 toffset = glm::vec2(0.0f, 0.0f);//Se declara al inicio para que las texturas no se muevan
@@ -403,7 +483,7 @@ int main()
 		//Piso
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(7.0f, 1.0f, 7.0f));
+		model = glm::scale(model, glm::vec3(14.0f, 1.0f, 14.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
 		glUniform2fv(uniformTextureOffset, 1, glm::value_ptr(toffset));
@@ -415,69 +495,59 @@ int main()
 		
 		//Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
 
-		//Prueba
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
-		//model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
-		modelaux = model;
-		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		//PruebaTexture.UseTexture();
-		Prueba.RenderModel();
-
 		//Pueblo
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
-		//model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+		model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
 		//model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		//Pueblo.RenderModel();
+		Pueblo.RenderModel();
 
 		//Arboles
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-55.0f, 0.0f, 0.0f));
-		//model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
-		//model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Arboles.RenderModel();
-
-		//Arboles
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(59.0f, 0.0f, 0.0f));
-		//model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+		model = glm::translate(model, glm::vec3(-115.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
 		//model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Arboles.RenderModel();
 
 		//Arboles
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(5.0f, 0.0f, 55.0f));
-		//model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+		model = glm::translate(model, glm::vec3(120.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
+		//model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Arboles.RenderModel();
+
+		//Arboles
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(5.0f, 0.0f, 115.0f));
+		model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
 		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Arboles.RenderModel();
 
 		//Arboles
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(5.0f, 0.0f, -59.0f));
-		//model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+		model = glm::translate(model, glm::vec3(5.0f, 0.0f, -115.0f));
+		model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
 		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Arboles.RenderModel();
 
 		//Voltorb
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-25.0f, 0.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(-25.0f, movVol, 0.0f));
 		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
-		//model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, rotVol * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Voltorb.RenderModel();
 
 		//Electrode
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(25.0f, 0.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(25.0f, movVol, 0.0f));
 		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
-		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, 180+rotVol * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Electrode.RenderModel();
 
@@ -489,32 +559,56 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Onix.RenderModel();
 
-		//Onix Cabeza
+		
+		//Cuerpo
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(10.0f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
-		modelaux = model;
-		//model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(-50.0f+movLuc, 0.0f, 50.0f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		modelLuc = model;
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		OnixCabeza.RenderModel();
+		LucCuerpo.RenderModel();
 
-		//Onix Cuerpo
+		//Cabeza
 		model = glm::mat4(1.0);
-		model = modelaux;
-		//model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
-		//model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+		model = modelLuc;
 		//model = glm::rotate(model, 45 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		OnixCuerpo.RenderModel();
+		LucCabeza.RenderModel();
 
-		//Onix Cola
+		//Cola
 		model = glm::mat4(1.0);
-		model = modelaux;
-		//model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
-		//model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
-		//model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = modelLuc;
+		//model = glm::rotate(model, 45 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		OnixCola.RenderModel();
+		LucCola.RenderModel();
+
+		//Brazo Derecho
+		model = glm::mat4(1.0);
+		model = modelLuc;
+		//model = glm::rotate(model, 45 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		LucBraDer.RenderModel();
+
+		//Brazo Izquierdo
+		model = glm::mat4(1.0);
+		model = modelLuc;
+		//model = glm::rotate(model, 45 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		LucBraIzq.RenderModel();
+
+		//Pierna Derecha
+		model = glm::mat4(1.0);
+		model = modelLuc;
+		//model = glm::rotate(model, 45 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		LucPierDer.RenderModel();
+
+		//Pierna Izquierda
+		model = glm::mat4(1.0);
+		model = modelLuc;
+		//model = glm::rotate(model, 45 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		LucPierIzq.RenderModel();
 
 		//######################//
 		//#### Laboratorio  ####//
@@ -524,7 +618,7 @@ int main()
 		model = glm::scale(model, glm::vec3(0.23f, 0.23f, 0.23f));
 		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Laboratorio.RenderModel();
+		//Laboratorio.RenderModel();
 
 		//#########################//
 		//#### Centro Pokémon  ####//
@@ -534,7 +628,7 @@ int main()
 		model = glm::scale(model, glm::vec3(0.23f, 0.23f, 0.23f));
 		//model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		CentroPokemon.RenderModel();
+		//CentroPokemon.RenderModel();
 
 		//#########################//
 		//####		GYM		   ####//
@@ -544,7 +638,7 @@ int main()
 		model = glm::scale(model, glm::vec3(0.23f, 0.23f, 0.23f));
 		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Gym.RenderModel();
+		//Gym.RenderModel();
 
 		//#########################//
 		//#### Tienda Pokémon  ####//
@@ -554,7 +648,7 @@ int main()
 		model = glm::scale(model, glm::vec3(0.30f, 0.30f, 0.30f));
 		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Tienda.RenderModel();
+		//Tienda.RenderModel();
 
 		//#########################//
 		//####   Casa Pokémon  ####//
@@ -564,7 +658,7 @@ int main()
 		model = glm::scale(model, glm::vec3(0.21f, 0.21f, 0.21f));
 		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Casa.RenderModel();
+		//Casa.RenderModel();
 
 		//#########################//
 		//####  Casa Pokémon 2 ####//
@@ -574,7 +668,7 @@ int main()
 		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
 		//model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Casa2.RenderModel();
+		//Casa2.RenderModel();
 
 		//#########################//
 		//####  Torre lavanda  ####//
@@ -584,7 +678,7 @@ int main()
 		model = glm::scale(model, glm::vec3(1.0f, 1.5f, 1.0f));
 		//model = glm::rotate(model, 0 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Torre.RenderModel();
+		//Torre.RenderModel();
 
 		//############################//
 		//####  Centro Comercial  ####//
@@ -594,7 +688,7 @@ int main()
 		model = glm::scale(model, glm::vec3(1.0f, 1.5f, 1.0f));
 		//model = glm::rotate(model, 0 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		CentroComercial.RenderModel();
+		//CentroComercial.RenderModel();
 
 		//Agave ¿qué sucede si lo renderizan antes del coche y de la pista?
 		model = glm::mat4(1.0);
