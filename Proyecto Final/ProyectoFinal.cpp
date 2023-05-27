@@ -87,7 +87,10 @@ Model LucBraDer;
 Model LucBraIzq;
 Model LucPierDer;
 Model LucPierIzq;
-
+Model CasaParque;
+Model Fuente;
+Model Dulceria;
+Model AreaInf;
 
 Model CentroPokemon;
 Model Laboratorio;
@@ -297,6 +300,14 @@ int main()
 	LucPierDer.LoadModel("Models/LucarioPierDer.obj");
 	LucPierIzq = Model();
 	LucPierIzq.LoadModel("Models/LucarioPierIzq.obj");
+	CasaParque = Model();
+	CasaParque.LoadModel("Models/CasaParque.obj");
+	Fuente = Model();
+	Fuente.LoadModel("Models/FuenteParque.obj");
+	Dulceria = Model();
+	Dulceria.LoadModel("Models/SnackArea.obj");
+	AreaInf = Model();
+	AreaInf.LoadModel("Models/AreaInfantil.obj");
 
 	// EDIFICACIONES
 	Laboratorio = Model();
@@ -609,6 +620,46 @@ int main()
 		//model = glm::rotate(model, 45 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		LucPierIzq.RenderModel();
+
+		//##########################//
+		//#### Casa del Parque  ####//
+		//##########################//
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
+		//model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		CasaParque.RenderModel();
+
+		//##########################//
+		//#### Fuente del Parque####//
+		//##########################//
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-30.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+		//model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Fuente.RenderModel();
+
+		//##########################//
+		//####     Dulcería	    ####//
+		//##########################//
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-30.0f, 0.0f, 30.0f));
+		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+		//model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Dulceria.RenderModel();
+
+		//##########################//
+		//#### Area Infantil    ####//
+		//##########################//
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-30.0f, 0.0f, -30.0f));
+		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+		//model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		AreaInf.RenderModel();
 
 		//######################//
 		//#### Laboratorio  ####//
