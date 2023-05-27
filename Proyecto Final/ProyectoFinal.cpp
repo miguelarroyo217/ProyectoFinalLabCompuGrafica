@@ -71,6 +71,15 @@ Model OnixCabeza;
 Model OnixCuerpo;
 Model OnixCola;
 
+Model CentroPokemon;
+Model Laboratorio;
+Model Gym;
+Model Tienda;
+Model Casa;
+Model CentroComercial;
+Model Torre;
+Model Casa2;
+
 Skybox skyboxDia;
 Skybox skyboxNoche;
 
@@ -263,6 +272,24 @@ int main()
 	OnixCola = Model();
 	OnixCola.LoadModel("Models/ColaOnix.obj");
 
+	// EDIFICACIONES
+	Laboratorio = Model();
+	Laboratorio.LoadModel("Models/LabPokemon.obj");
+	CentroPokemon = Model();
+	CentroPokemon.LoadModel("Models/CentroPokemon.obj");
+	Gym = Model();
+	Gym.LoadModel("Models/GYM.obj");
+	Tienda = Model();
+	Tienda.LoadModel("Models/Shop.obj");
+	Casa = Model();
+	Casa.LoadModel("Models/CasaP.obj");
+	Casa2 = Model();
+	Casa2.LoadModel("Models/Casa2.obj");
+	Torre = Model();
+	Torre.LoadModel("Models/TorreLavanda.obj");
+	CentroComercial = Model();
+	CentroComercial.LoadModel("Models/CentroComercial.obj");
+
 
 	std::vector<std::string> skyboxFacesDia;
 	
@@ -404,7 +431,7 @@ int main()
 		//model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
 		//model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Pueblo.RenderModel();
+		//Pueblo.RenderModel();
 
 		//Arboles
 		model = glm::mat4(1.0);
@@ -488,6 +515,86 @@ int main()
 		//model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		OnixCola.RenderModel();
+
+		//######################//
+		//#### Laboratorio  ####//
+		//######################//
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-37.398f, 0.0f, 14.775f));
+		model = glm::scale(model, glm::vec3(0.23f, 0.23f, 0.23f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Laboratorio.RenderModel();
+
+		//#########################//
+		//#### Centro Pokémon  ####//
+		//#########################//
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-15.493f, 0.0f, -39.164f));
+		model = glm::scale(model, glm::vec3(0.23f, 0.23f, 0.23f));
+		//model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		CentroPokemon.RenderModel();
+
+		//#########################//
+		//####		GYM		   ####//
+		//#########################//
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(42.699f, 0.0f, -14.528f));
+		model = glm::scale(model, glm::vec3(0.23f, 0.23f, 0.23f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Gym.RenderModel();
+
+		//#########################//
+		//#### Tienda Pokémon  ####//
+		//#########################//
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(15.285f, 0.0f, 34.026f));
+		model = glm::scale(model, glm::vec3(0.30f, 0.30f, 0.30f));
+		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Tienda.RenderModel();
+
+		//#########################//
+		//####   Casa Pokémon  ####//
+		//#########################//
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-37.695f, 0.0f, -15.845f));
+		model = glm::scale(model, glm::vec3(0.21f, 0.21f, 0.21f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Casa.RenderModel();
+
+		//#########################//
+		//####  Casa Pokémon 2 ####//
+		//#########################//
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-14.467f, 0.0f, 37.66f));
+		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+		//model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Casa2.RenderModel();
+
+		//#########################//
+		//####  Torre lavanda  ####//
+		//#########################//
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(43.903f, 0.0f, 15.084f));
+		model = glm::scale(model, glm::vec3(1.0f, 1.5f, 1.0f));
+		//model = glm::rotate(model, 0 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Torre.RenderModel();
+
+		//############################//
+		//####  Centro Comercial  ####//
+		//############################//
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(14.851f, 0.0f, -42.168f));
+		model = glm::scale(model, glm::vec3(1.0f, 1.5f, 1.0f));
+		//model = glm::rotate(model, 0 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		CentroComercial.RenderModel();
 
 		//Agave ¿qué sucede si lo renderizan antes del coche y de la pista?
 		model = glm::mat4(1.0);

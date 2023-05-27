@@ -1,0 +1,47 @@
+# 3ds Max Wavefront OBJ Exporter v0.99 - (c)2007 guruware
+# File Created: 26.05.2023 03:31:05
+
+newmtl h_mado
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 1.0000 1.0000 1.0000
+	Kd 0.5500 0.5500 0.5500
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Users\CristianHH\Desktop\Modelos\CasaP\h_mado.png
+	map_Kd C:\Users\CristianHH\Desktop\Modelos\CasaP\h_mado.png
+	map_d C:\Users\CristianHH\Desktop\Modelos\CasaP\h_mado.png
+
+newmtl wk_hh_b
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 1.0000 1.0000 1.0000
+	Kd 0.5500 0.5500 0.5500
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Users\CristianHH\Desktop\Modelos\CasaP\wk_hh_b.png
+	map_Kd C:\Users\CristianHH\Desktop\Modelos\CasaP\wk_hh_b.png
+	map_d C:\Users\CristianHH\Desktop\Modelos\CasaP\wk_hh_b.png
+
+newmtl wk_hh_a
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 1.0000 1.0000 1.0000
+	Kd 0.5500 0.5500 0.5500
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Users\CristianHH\Desktop\Modelos\CasaP\wk_hh_a.png
+	map_Kd C:\Users\CristianHH\Desktop\Modelos\CasaP\wk_hh_a.png
+	map_d C:\Users\CristianHH\Desktop\Modelos\CasaP\wk_hh_a.png
