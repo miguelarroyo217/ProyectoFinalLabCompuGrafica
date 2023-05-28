@@ -365,30 +365,29 @@ int main()
 
 	std::vector<std::string> skyboxFacesDia;
 
-	skyboxFacesDia.push_back("Textures/Skybox/rt.tga");
-	skyboxFacesDia.push_back("Textures/Skybox/cupertin-lake_lf.tga");
-	skyboxFacesDia.push_back("Textures/Skybox/cupertin-lake_dn.tga");
-	skyboxFacesDia.push_back("Textures/Skybox/cupertin-lake_up.tga");
-	skyboxFacesDia.push_back("Textures/Skybox/cupertin-lake_bk.tga");
-	skyboxFacesDia.push_back("Textures/Skybox/cupertin-lake_ft.tga");
+	/*skyboxFacesDia.push_back("Textures/Skybox/Day-Skybox_rt.tga");
+	skyboxFacesDia.push_back("Textures/Skybox/Day-Skybox_lf.tga");
+	skyboxFacesDia.push_back("Textures/Skybox/Day-Skybox_dn.tga");
+	skyboxFacesDia.push_back("Textures/Skybox/Day-Skybox_up.tga");
+	skyboxFacesDia.push_back("Textures/Skybox/Day-Skybox_bk.tga");
+	skyboxFacesDia.push_back("Textures/Skybox/Day-Skybox_ft.tga");*/
 	
-	/*skyboxFacesDia.push_back("Textures/Skybox/cupertin-lake_rt.tga");
-	skyboxFacesDia.push_back("Textures/Skybox/cupertin-lake_lf.tga");
-	skyboxFacesDia.push_back("Textures/Skybox/cupertin-lake_dn.tga");
-	skyboxFacesDia.push_back("Textures/Skybox/cupertin-lake_up.tga");
-	skyboxFacesDia.push_back("Textures/Skybox/cupertin-lake_bk.tga");
-	skyboxFacesDia.push_back("Textures/Skybox/cupertin-lake_ft.tga");*/
+	skyboxFacesDia.push_back("Textures/Skybox/Night-Skybox_rt.tga");
+	skyboxFacesDia.push_back("Textures/Skybox/Night-Skybox_lf.tga");
+	skyboxFacesDia.push_back("Textures/Skybox/Night-Skybox_dn.tga");
+	skyboxFacesDia.push_back("Textures/Skybox/Night-Skybox_up.tga");
+	skyboxFacesDia.push_back("Textures/Skybox/Night-Skybox_bk.tga");
+	skyboxFacesDia.push_back("Textures/Skybox/Night-Skybox_ft.tga");
+	
 
 	std::vector<std::string> skyboxFacesNoche;
 
-	skyboxFacesNoche.push_back("Textures/Skybox/cupertin-lake-night_rt.tga");
-	skyboxFacesNoche.push_back("Textures/Skybox/cupertin-lake-night_lf.tga");
-	skyboxFacesNoche.push_back("Textures/Skybox/cupertin-lake-night_dn.tga");
-	skyboxFacesNoche.push_back("Textures/Skybox/cupertin-lake-night_up.tga");
-	skyboxFacesNoche.push_back("Textures/Skybox/cupertin-lake-night_bk.tga");
-	skyboxFacesNoche.push_back("Textures/Skybox/cupertin-lake-night_ft.tga");
-
-	
+	skyboxFacesNoche.push_back("Textures/Skybox/Night-Skybox_rt.tga");
+	skyboxFacesNoche.push_back("Textures/Skybox/Night-Skybox_lf.tga");
+	skyboxFacesNoche.push_back("Textures/Skybox/Night-Skybox_dn.tga");
+	skyboxFacesNoche.push_back("Textures/Skybox/Night-Skybox_up.tga");
+	skyboxFacesNoche.push_back("Textures/Skybox/Night-Skybox_bk.tga");
+	skyboxFacesNoche.push_back("Textures/Skybox/Night-Skybox_ft.tga");
 
 	skyboxDia = Skybox(skyboxFacesDia);
 	skyboxNoche = Skybox(skyboxFacesNoche);
