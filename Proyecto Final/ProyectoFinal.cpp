@@ -74,6 +74,7 @@ std::vector<Mesh*> meshList;
 std::vector<Shader> shaderList;
 
 Camera camera;
+Camera camIso;
 
 Texture plainTexture;
 Texture pisoTexture;
@@ -275,7 +276,9 @@ int main()
 	CreateObjects();
 	CreateShaders();
 
-	camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 0.5f, 0.5f);
+	//if (mainWindow.getBanOnAnim() == false)
+	//camera = Camera(glm::vec3(-60.0f, 5.0f, 50.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, 0.0f, 0.5f, 0.5f);//Ligada al planoXZ
+	camIso = Camera(glm::vec3(-150.0f, 150.0f, 150.0f), glm::vec3(0.0f, 1.0f, 0.0f), -45.0f, -45.0f, 0.5f, 0.5f);//Isometrica
 
 	plainTexture = Texture("Textures/plain.png");
 	plainTexture.LoadTextureA();
@@ -537,20 +540,24 @@ int main()
 
 		//Recibir eventos del usuario
 		glfwPollEvents();
-		camera.keyControl(mainWindow.getsKeys(), deltaTime);
-		camera.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
+		//camera.keyControl(mainWindow.getsKeys(), deltaTime);
+		//camera.mouseControl(mainWindow.getXChange(), 0.0f);
+		camIso.keyControl(mainWindow.getsKeys(), deltaTime);
+		camIso.mouseControl(0.0f, 0.0f);
 
 		// Clear the window
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		if (mainWindow.getBanDia() == 1) {
-			skyboxDia.DrawSkybox(camera.calculateViewMatrix(), projection);
+			//skyboxDia.DrawSkybox(camera.calculateViewMatrix(), projection);
+			skyboxDia.DrawSkybox(camIso.calculateViewMatrix(), projection);
 			spotLights[0].SetFlash(glm::vec3(0.0f, 20.0f, -68.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 			spotLights[1].SetFlash(glm::vec3(-48.0f, 20.0f, -10.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 			spotLights[2].SetFlash(glm::vec3(59.0f, 20.0f, -2.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 		}
 		else {
-			skyboxNoche.DrawSkybox(camera.calculateViewMatrix(), projection);
+			//skyboxNoche.DrawSkybox(camera.calculateViewMatrix(), projection);
+			skyboxNoche.DrawSkybox(camIso.calculateViewMatrix(), projection);
 			spotLights[0].SetFlash(glm::vec3(0.0f, 20.0f, -68.0f), glm::vec3(0.0f, -1.0f, 0.0f));
 			spotLights[1].SetFlash(glm::vec3(-48.0f, 20.0f, -10.0f), glm::vec3(0.0f, -1.0f, 0.0f));
 			spotLights[2].SetFlash(glm::vec3(59.0f, 20.0f, -2.0f), glm::vec3(0.0f, -1.0f, 0.0f));
@@ -569,8 +576,10 @@ int main()
 		uniformShininess = shaderList[0].GetShininessLocation();
 
 		glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
-		glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
-		glUniform3f(uniformEyePosition, camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
+		//glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
+		glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camIso.calculateViewMatrix()));
+		//glUniform3f(uniformEyePosition, camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
+		glUniform3f(uniformEyePosition, camIso.getCameraPosition().x, camIso.getCameraPosition().y, camIso.getCameraPosition().z);
 
 
 		//información al shader de fuentes de iluminación
