@@ -606,7 +606,6 @@ int main()
 
 		meshList[2]->RenderMesh();
 
-		
 		//Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
 
 		//Pueblo
