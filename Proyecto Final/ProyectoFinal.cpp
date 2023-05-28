@@ -336,12 +336,12 @@ int main()
 	Dulceria.LoadModel("Models/SnackArea.obj");
 	AreaInf = Model();
 	AreaInf.LoadModel("Models/AreaInfantil.obj");
-	Reja = Model();
-	Reja.LoadModel("Models/Reja.obj");
 	Columpio = Model();
 	Columpio.LoadModel("Models/Columpio.obj");
 	SyB = Model();
 	SyB.LoadModel("Models/SubeyBaja.obj");
+	Reja = Model();
+	Reja.LoadModel("Models/Reja.obj");
 	Entrada = Model();
 	Entrada.LoadModel("Models/Entrada.obj");
 	Personaje2 = Model();
@@ -568,7 +568,6 @@ int main()
 		}
 		
 		// ANIMACION SIMPLE: Columpio
-
 		if (mainWindow.getBanOnAnim()) { // Rota
 			if (rotColumpio < incRot && BanColumpio == true)
 				rotColumpio += rotColumpioOffset * deltaTime;
@@ -876,7 +875,6 @@ int main()
 		model = glm::translate(model, glm::vec3(-10.0f, 0.0f, 0.0f));
 		modelaux = model;
 		model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
-		//model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		CasaParque.RenderModel();
 
@@ -886,7 +884,6 @@ int main()
 		model = modelaux;
 		model = glm::translate(model, glm::vec3(-15.0f, -0.2f, 15.0f));
 		model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
-		//model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Fuente.RenderModel();
 
