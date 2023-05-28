@@ -490,7 +490,7 @@ int main()
 			(tiempo_actual - tiempo_anterior).count();
 
 		//Verifica que pasen 60 segundos y cambia
-		if (diferencia >= 5000) {
+		if (diferencia >= 60000) {
 			dia = !dia;
 			tiempo_anterior = tiempo_actual;
 		}
