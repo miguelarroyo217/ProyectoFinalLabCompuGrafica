@@ -86,7 +86,7 @@ Camera camIso;
 Texture plainTexture;
 Texture pisoTexture;
 Texture AgaveTexture;
-Texture FlechaTexture;
+Texture humo;
 
 
 Model Pueblo;
@@ -302,8 +302,8 @@ int main()
 	pisoTexture.LoadTextureA();
 	AgaveTexture = Texture("Textures/Agave.tga");
 	AgaveTexture.LoadTextureA();
-	FlechaTexture = Texture("Textures/flechas.tga");
-	FlechaTexture.LoadTextureA();
+	humo = Texture("Textures/humo.tga");
+	humo.LoadTextureA();
 
 
 	Pueblo = Model();
@@ -365,19 +365,12 @@ int main()
 
 	std::vector<std::string> skyboxFacesDia;
 
-	/*skyboxFacesDia.push_back("Textures/Skybox/Day-Skybox_rt.tga");
+	skyboxFacesDia.push_back("Textures/Skybox/Day-Skybox_rt.tga");
 	skyboxFacesDia.push_back("Textures/Skybox/Day-Skybox_lf.tga");
 	skyboxFacesDia.push_back("Textures/Skybox/Day-Skybox_dn.tga");
 	skyboxFacesDia.push_back("Textures/Skybox/Day-Skybox_up.tga");
 	skyboxFacesDia.push_back("Textures/Skybox/Day-Skybox_bk.tga");
-	skyboxFacesDia.push_back("Textures/Skybox/Day-Skybox_ft.tga");*/
-	
-	skyboxFacesDia.push_back("Textures/Skybox/Night-Skybox_rt.tga");
-	skyboxFacesDia.push_back("Textures/Skybox/Night-Skybox_lf.tga");
-	skyboxFacesDia.push_back("Textures/Skybox/Night-Skybox_dn.tga");
-	skyboxFacesDia.push_back("Textures/Skybox/Night-Skybox_up.tga");
-	skyboxFacesDia.push_back("Textures/Skybox/Night-Skybox_bk.tga");
-	skyboxFacesDia.push_back("Textures/Skybox/Night-Skybox_ft.tga");
+	skyboxFacesDia.push_back("Textures/Skybox/Day-Skybox_ft.tga");
 	
 
 	std::vector<std::string> skyboxFacesNoche;
@@ -1181,21 +1174,35 @@ int main()
 		glEnable(GL_BLEND);//Para indicar trasparencia y traslucidez
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);//Va antes de la textura
 
-		//textura con movimiento
-		//Importantes porque la variable uniform no podemos modificarla directamente
+		//textura con movimiento del humo
 		toffsetu += 0.001 * deltaTime;
 		toffsetv += 0.0 * deltaTime;
-		//para que no se desborde la variable
 		if (toffsetu > 1.0)
 			toffsetu = 0.0;
-		//if (toffsetv > 1.0)
-		//	toffsetv = 0;
-		//printf("\ntfosset %f \n", toffsetu);
-		//pasar a la variable uniform el valor actualizado
 		toffset = glm::vec2(toffsetu, toffsetv);
 
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-21.972f, 28.592f, 3.27f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, 45 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(4.0f, 4.0f, 4.0f));
+		glUniform2fv(uniformTextureOffset, 1, glm::value_ptr(toffset));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		humo.UseTexture();
+		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		meshList[4]->RenderMesh();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-24.772f, 31.392f, 3.27f));
+		model = glm::rotate(model, -90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, 45 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(4.0f, 4.0f, 4.0f));
+		glUniform2fv(uniformTextureOffset, 1, glm::value_ptr(toffset));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		humo.UseTexture();
+		meshList[4]->RenderMesh();
+
 		glDisable(GL_BLEND);//Desactiva el blender
-		toffset = glm::vec2(0.0f, 0.0f);
 
 		glUseProgram(0);
 
