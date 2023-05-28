@@ -1,6 +1,8 @@
 ﻿/*
 Semestre 2023-2
-Nombre: Arroyo Quiroz José Miguel
+Nombres: 
+Arroyo Quiroz José Miguel
+Hernández Hernández Cristian
 Proyecto Final: Diorama de la Vida Cotidiana (Lucario y Mordecai)
 */
 //para cargar imagen
@@ -116,13 +118,7 @@ Model Entrada;
 
 Model Farola;
 Model Poste;
-Model CentroPokemon;
-Model Laboratorio;
-Model Gym;
-Model Tienda;
-Model Casa;
-Model CentroComercial;
-Model Torre;
+
 Model Casa2;
 Model Personaje2;
 Model arbol;
@@ -289,12 +285,11 @@ int main()
 	CreateObjects();
 	CreateShaders();
 
-	//if (mainWindow.getBanOnAnim() == false)
-	//camera = Camera(glm::vec3(-60.0f, 5.0f, 50.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, 0.0f, 0.5f, 0.5f);//Ligada al planoXZ
+	camera = Camera(glm::vec3(-60.0f, 5.0f, 50.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, 0.0f, 0.5f, 0.5f);//Ligada al planoXZ
 	//camIso = Camera(glm::vec3(-150.0f, 150.0f, 150.0f), glm::vec3(0.0f, 1.0f, 0.0f), -45.0f, -45.0f, 0.5f, 0.5f);//Isometrica
 	
 	//Original
-	camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 0.5f, 0.5f);
+	//camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 0.5f, 0.5f);
 
 	plainTexture = Texture("Textures/plain.png");
 	plainTexture.LoadTextureA();
@@ -618,8 +613,8 @@ int main()
 		//Recibir eventos del usuario
 		glfwPollEvents();
 		camera.keyControl(mainWindow.getsKeys(), deltaTime);
-		//camera.mouseControl(mainWindow.getXChange(), 0.0f);
-		camera.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
+		camera.mouseControl(mainWindow.getXChange(), 0.0f);
+		//camera.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
 		//camIso.keyControl(mainWindow.getsKeys(), deltaTime);
 		//camIso.mouseControl(0.0f, 0.0f);
 
