@@ -64,6 +64,11 @@ int rotLucOffset;
 bool avanza;
 bool gira;
 
+float rotColumpio, rotSyB;
+float rotColumpioOffset, rotSyBOffset;
+bool BanColumpio, BanSyB;
+float incRot;
+
 //Banderas
 int bandia = 0;
 /*unsigned t0, t1;
@@ -102,6 +107,9 @@ Model Fuente;
 Model Dulceria;
 Model AreaInf;
 Model Reja;
+Model Columpio;
+Model SyB;
+Model Entrada;
 
 Model Farola;
 Model Poste;
@@ -324,6 +332,12 @@ int main()
 	AreaInf.LoadModel("Models/AreaInfantil.obj");
 	Reja = Model();
 	Reja.LoadModel("Models/Reja.obj");
+	Columpio = Model();
+	Columpio.LoadModel("Models/Columpio.obj");
+	SyB = Model();
+	SyB.LoadModel("Models/SubeyBaja.obj");
+	Entrada = Model();
+	Entrada.LoadModel("Models/Entrada.obj");
 
 	// EDIFICACIONES
 	Farola = Model();
@@ -331,21 +345,21 @@ int main()
 	Poste = Model();
 	Poste.LoadModel("Models/Poste.obj");
 	Laboratorio = Model();
-	Laboratorio.LoadModel("Models/LabPokemon.fbx");
+	Laboratorio.LoadModel("Models/LabPokemon.obj");
 	CentroPokemon = Model();
-	CentroPokemon.LoadModel("Models/CentroPokemon.fbx");
+	CentroPokemon.LoadModel("Models/CentroPokemon.obj");
 	Gym = Model();
-	Gym.LoadModel("Models/GYM.fbx");
+	Gym.LoadModel("Models/GYM.obj");
 	Tienda = Model();
-	Tienda.LoadModel("Models/Shop.fbx");
+	Tienda.LoadModel("Models/Shop.obj");
 	Casa = Model();
-	Casa.LoadModel("Models/CasaP.fbx");
+	Casa.LoadModel("Models/CasaP.obj");
 	Casa2 = Model();
-	Casa2.LoadModel("Models/Casa2.fbx");
+	Casa2.LoadModel("Models/Casa2.obj");
 	Torre = Model();
-	Torre.LoadModel("Models/TorreLavanda.fbx");
+	Torre.LoadModel("Models/TorreLavanda.obj");
 	CentroComercial = Model();
-	CentroComercial.LoadModel("Models/CentroComercial.fbx");
+	CentroComercial.LoadModel("Models/CentroComercial.obj");
 
 
 	std::vector<std::string> skyboxFacesDia;
@@ -453,6 +467,13 @@ int main()
 	rotLucOffset = 2;
 	avanza = false;
 	gira = false;
+
+	rotColumpio = 0.0f;
+	rotColumpioOffset = 0.2f;
+	BanColumpio = BanSyB = true;
+	rotSyB = 0.0f;
+	rotSyBOffset = 0.23f;
+	incRot = 10.0f;
 	
 	////Loop mientras no se cierra la ventana
 	while (!mainWindow.getShouldClose())
@@ -534,6 +555,48 @@ int main()
 			}
 		}
 		
+		// ANIMACION SIMPLE: Columpio
+
+		if (mainWindow.getBanOnAnim()) { // Rota
+			if (rotColumpio < incRot && BanColumpio == true)
+				rotColumpio += rotColumpioOffset * deltaTime;
+			else if (rotColumpio > -incRot && BanColumpio == false)
+				rotColumpio -= rotColumpioOffset * deltaTime;
+			else {
+				BanColumpio = !BanColumpio;
+				if (incRot < 60.0f)
+					incRot += 5.0f;
+			}
+		}
+		else { // Se detiene y regresa al punto incial
+			if (rotColumpio < -0.1f) {
+				rotColumpio += rotColumpioOffset * deltaTime;
+			}
+			else if (rotColumpio > 0.1f) {
+				rotColumpio -= rotColumpioOffset * deltaTime;
+			}
+			incRot = 0.0f;
+		}
+
+		// ANIMACION SIMPLE: Sube y Baja
+		if (mainWindow.getBanOnAnim()) { // Rota
+			if (rotSyB < 26.0f && BanSyB == true)
+				rotSyB += rotSyBOffset * deltaTime;
+			else if (rotSyB > 0.0f && BanSyB == false)
+				rotSyB -= rotSyBOffset * deltaTime;
+			else {
+				BanSyB = !BanSyB;
+			}
+		}
+		else { // Se detiene y regresa al punto incial
+			if (rotSyB < -0.1f) {
+				rotSyB += rotColumpioOffset * deltaTime;
+			}
+			else if (rotColumpio > 0.1f) {
+				rotSyB -= rotColumpioOffset * deltaTime;
+			}
+		}
+
 
 		//Recibir eventos del usuario
 		glfwPollEvents();
@@ -582,6 +645,7 @@ int main()
 		glm::mat4 model(1.0);
 		glm::mat4 modelLuc(1.0);
 		glm::mat4 modelaux(1.0);
+		glm::mat4 modelSyB(1.0);
 		glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f);
 		glm::vec2 toffset = glm::vec2(0.0f, 0.0f);//Se declara al inicio para que las texturas no se muevan
 
@@ -805,9 +869,38 @@ int main()
 		model = modelaux;
 		model = glm::translate(model, glm::vec3(30.0f, 0.0f, 25.0f));
 		model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
-		//model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		modelSyB = model;
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		AreaInf.RenderModel();
+
+		//Sube y Baja 1
+		model = modelSyB;
+		model = glm::translate(model, glm::vec3(-0.715f, 0.633f, 2.798f));
+		//model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
+		model = glm::rotate(model, rotSyB * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		SyB.RenderModel();
+
+		//Sube y Baja 2
+		model = modelSyB;
+		model = glm::translate(model, glm::vec3(-0.697, 0.633f, 4.172f));
+		model = glm::rotate(model, (-rotSyB + 26.0f) * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		SyB.RenderModel();
+
+		//Columpios 1
+		model = modelSyB;
+		model = glm::translate(model, glm::vec3(0.6f, 3.442f, -0.919f));
+		model = glm::rotate(model, rotColumpio * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Columpio.RenderModel();
+
+		//Columpios 2
+		model = modelSyB;
+		model = glm::translate(model, glm::vec3(-1.302f, 3.442f, -0.919f));
+		model = glm::rotate(model, -rotColumpio * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Columpio.RenderModel();
 
 		//##########################//
 		//#### Rejas del parque ####//
@@ -839,7 +932,7 @@ int main()
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -6.0f + 0.376f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Reja.RenderModel();
-		
+
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -12.0f));
 		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
@@ -852,21 +945,23 @@ int main()
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -12.0f + 0.188f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Reja.RenderModel();
-		
+
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -12.0f));
 		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Reja.RenderModel();
 
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -12.0f + 0.188f));
+		//model = glm::rotate(model, 90* toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Reja.RenderModel();
+		Entrada.RenderModel();
 
+
+		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -6.0f + 0.376f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Reja.RenderModel();
-		
-		
+
 		//######################//
 		//#### Laboratorio  ####//
 		//######################//
