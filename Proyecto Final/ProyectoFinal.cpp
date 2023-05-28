@@ -364,13 +364,20 @@ int main()
 	Poste.LoadModel("Models/Poste.obj");
 
 	std::vector<std::string> skyboxFacesDia;
-	
-	skyboxFacesDia.push_back("Textures/Skybox/cupertin-lake_rt.tga");
+
+	skyboxFacesDia.push_back("Textures/Skybox/rt.tga");
 	skyboxFacesDia.push_back("Textures/Skybox/cupertin-lake_lf.tga");
 	skyboxFacesDia.push_back("Textures/Skybox/cupertin-lake_dn.tga");
 	skyboxFacesDia.push_back("Textures/Skybox/cupertin-lake_up.tga");
 	skyboxFacesDia.push_back("Textures/Skybox/cupertin-lake_bk.tga");
 	skyboxFacesDia.push_back("Textures/Skybox/cupertin-lake_ft.tga");
+	
+	/*skyboxFacesDia.push_back("Textures/Skybox/cupertin-lake_rt.tga");
+	skyboxFacesDia.push_back("Textures/Skybox/cupertin-lake_lf.tga");
+	skyboxFacesDia.push_back("Textures/Skybox/cupertin-lake_dn.tga");
+	skyboxFacesDia.push_back("Textures/Skybox/cupertin-lake_up.tga");
+	skyboxFacesDia.push_back("Textures/Skybox/cupertin-lake_bk.tga");
+	skyboxFacesDia.push_back("Textures/Skybox/cupertin-lake_ft.tga");*/
 
 	std::vector<std::string> skyboxFacesNoche;
 
