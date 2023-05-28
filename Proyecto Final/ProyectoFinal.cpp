@@ -54,8 +54,11 @@ float movOnixOffset;
 int rotOnix;
 int rotOnixOffset;
 bool avanzaOnix;
-float movLuc;
-float movLucOffset;
+float movXLuc;
+float movXLucOffset;
+float movZLuc;
+float movZLucOffset;
+int rotCuerLuc;
 int rotLuc;
 int rotLucOffset;
 bool avanza;
@@ -441,8 +444,11 @@ int main()
 	rotOnix = 0;
 	rotOnixOffset = 10;
 	avanzaOnix = false;
-	movLuc = 0.0;
-	movLucOffset = 0.1;
+	movXLuc = 0.0;
+	movXLucOffset = 0.1;
+	movZLuc = 0.0;
+	movZLucOffset = 0.1;
+	rotCuerLuc = 0;
 	rotLuc = 0;
 	rotLucOffset = 2;
 	avanza = false;
@@ -456,7 +462,6 @@ int main()
 		deltaTime += (now - lastTime) / limitFPS;
 		lastTime = now;
 
-		//t0 = clock();
 
 		//Animación Voltorb y Electrode
 		if (movVol < 10.0f && arriba == false && mainWindow.getBanOnAnim() == true) {
@@ -475,14 +480,14 @@ int main()
 		//Animacion Onix
 		if (movOnix > -90.5f && avanzaOnix == false && mainWindow.getBanOnAnim() == true) {
 			movOnix -= movOnixOffset * deltaTime;
-			rotOnix += rotOnixOffset * deltaTime;
+			//rotOnix += rotOnixOffset * deltaTime;
 			if (movOnix > -91.0f && movOnix < -90.0f) {
 				avanzaOnix = true;
 			}
 		}
 		else if (movOnix < 90.5f && avanzaOnix == true && mainWindow.getBanOnAnim() == true) {
 			movOnix += movOnixOffset * deltaTime;
-			rotOnix -= rotVolOffset * deltaTime;
+			//rotOnix -= rotVolOffset * deltaTime;
 			if (movOnix < 91.0f && movOnix > 90.0f)
 				avanzaOnix = false;
 		}
@@ -495,28 +500,39 @@ int main()
 			}
 		}
 		else if (rotLuc > -20 && gira == true && mainWindow.getBanOnAnim() == true) {
-			rotLuc += rotLucOffset * deltaTime;
+			rotLuc -= rotLucOffset * deltaTime;
 			if (rotLuc < -19 && rotLuc > -21) {
 				gira = false;
 			}
 		}
 
-		if (movLuc < 100.5f && avanza == false && mainWindow.getBanOnAnim() == true) {
-			movLuc += movLucOffset * deltaTime;
-			//rotLuc += rotLucOffset * deltaTime;
-			if (movLuc < 101.0f && movLuc > 100.0f ) {
-				//rotLuc += rotLucOffset * deltaTime;
-				//avanza = true;
-				//gira = true;
+
+		if (movXLuc < 100.5f && avanza == false && mainWindow.getBanOnAnim() == true) {
+			movXLuc += movXLucOffset * deltaTime;
+			if (movXLuc < 101.0f && movXLuc > 100.0f ) {
+				rotCuerLuc = 1;
+				avanza = true;
 			}
 		}
-		/*else if (movVol > 0.0f && arriba == true && mainWindow.getBanOnAnim() == true) {
-			movVol -= movVolOffset * deltaTime;
-			rotVol -= rotVolOffset * deltaTime;
-			if (movVol < 0.5f && movVol > -0.5f)
-				arriba = false;
-		}*/
-
+		else if (movZLuc < 120.5f && rotCuerLuc == 1 && mainWindow.getBanOnAnim() == true) {
+			movZLuc += movVolOffset * deltaTime;
+			if (movZLuc < 121.0f && movZLuc > 120.0f) {
+				rotCuerLuc = 2;
+			}
+		}
+		else if (movXLuc > 0.0f && rotCuerLuc == 2 && mainWindow.getBanOnAnim() == true) {
+			movXLuc -= movXLucOffset * deltaTime;
+			if (movXLuc < 0.5f && movXLuc > -0.5f) {
+				rotCuerLuc = 3;
+			}
+		}
+		else if (movZLuc > 0.0f && rotCuerLuc == 3 && mainWindow.getBanOnAnim() == true) {
+			movZLuc -= movVolOffset * deltaTime;
+			if (movZLuc < 0.5f && movZLuc > -0.5f) {
+				rotCuerLuc = 0;
+				avanza = false;
+			}
+		}
 		
 
 		//Recibir eventos del usuario
@@ -671,7 +687,7 @@ int main()
 
 		//Voltorb
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-60.0f, movVol, -60.0f));
+		model = glm::translate(model, glm::vec3(10.0f, movVol, 40.0f));
 		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
 		model = glm::rotate(model, rotVol * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
@@ -679,7 +695,7 @@ int main()
 
 		//Electrode
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(60.0f, movVol, -60.0f));
+		model = glm::translate(model, glm::vec3(30.0f, movVol, 40.0f));
 		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
 		model = glm::rotate(model, 180+rotVol * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
@@ -687,7 +703,7 @@ int main()
 
 		//Onix
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(movOnix, 0.0f, -70.0f));
+		model = glm::translate(model, glm::vec3(movOnix, 0.0f, 100.0f));
 		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
 		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, rotOnix * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
@@ -697,8 +713,15 @@ int main()
 		
 		//Cuerpo
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-50.0f+movLuc, 0.0f, 50.0f));
-		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(-50.0f+movXLuc, 0.0f, 50.0f-movZLuc));
+		if(rotCuerLuc == 0)
+			model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		else if(rotCuerLuc == 1)
+			model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		else if (rotCuerLuc == 2)
+			model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		else if (rotCuerLuc == 3)
+			model = glm::rotate(model, 0 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		modelLuc = model;
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		LucCuerpo.RenderModel();
@@ -706,7 +729,7 @@ int main()
 		//Cabeza
 		model = glm::mat4(1.0);
 		model = modelLuc;
-		//model = glm::rotate(model, 45 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		//model = glm::rotate(model, -rotLuc * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		LucCabeza.RenderModel();
 
@@ -924,18 +947,10 @@ int main()
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		//CentroComercial.RenderModel();
 
-		//Agave ¿qué sucede si lo renderizan antes del coche y de la pista?
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.0f, 0.5f, -10.0f));
-		model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
 		//blending: transparencia o traslucidez
 		glEnable(GL_BLEND);//Para indicar trasparencia y traslucidez
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);//Va antes de la textura
-		AgaveTexture.UseTexture();
-		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
-		meshList[3]->RenderMesh();
-
 
 		//textura con movimiento
 		//Importantes porque la variable uniform no podemos modificarla directamente
@@ -950,23 +965,8 @@ int main()
 		//pasar a la variable uniform el valor actualizado
 		toffset = glm::vec2(toffsetu, toffsetv);
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.0f, 0.2f, -6.0f));
-		model = glm::rotate(model, 90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
-		model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
-		glUniform2fv(uniformTextureOffset, 1, glm::value_ptr(toffset));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-
-		FlechaTexture.UseTexture();
-		//Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
-		meshList[4]->RenderMesh();
 		glDisable(GL_BLEND);//Desactiva el blender
 		toffset = glm::vec2(0.0f, 0.0f);
-
-		/*t1 = clock();
-		time = (double(t1 - t0) / CLOCKS_PER_SEC);
-		std::cout << "Execution Time: " << time;*/
 
 		glUseProgram(0);
 
