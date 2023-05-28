@@ -91,6 +91,7 @@ Model CasaParque;
 Model Fuente;
 Model Dulceria;
 Model AreaInf;
+Model Reja;
 
 Model CentroPokemon;
 Model Laboratorio;
@@ -308,6 +309,8 @@ int main()
 	Dulceria.LoadModel("Models/SnackArea.obj");
 	AreaInf = Model();
 	AreaInf.LoadModel("Models/AreaInfantil.obj");
+	Reja = Model();
+	Reja.LoadModel("Models/Reja.obj");
 
 	// EDIFICACIONES
 	Laboratorio = Model();
@@ -625,7 +628,8 @@ int main()
 		//#### Casa del Parque  ####//
 		//##########################//
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(-10.0f, 0.0f, 0.0f));
+		modelaux = model;
 		model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
 		//model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
@@ -634,9 +638,9 @@ int main()
 		//##########################//
 		//#### Fuente del Parque####//
 		//##########################//
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-30.0f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+		model = modelaux;
+		model = glm::translate(model, glm::vec3(-15.0f, 0.0f, 15.0f));
+		model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
 		//model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Fuente.RenderModel();
@@ -644,9 +648,9 @@ int main()
 		//##########################//
 		//####     Dulcería	    ####//
 		//##########################//
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-30.0f, 0.0f, 30.0f));
-		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+		model = modelaux;
+		model = glm::translate(model, glm::vec3(20.0f, 0.0f, -30.0f));
+		model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
 		//model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Dulceria.RenderModel();
@@ -654,13 +658,71 @@ int main()
 		//##########################//
 		//#### Area Infantil    ####//
 		//##########################//
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-30.0f, 0.0f, -30.0f));
-		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+		model = modelaux;
+		model = glm::translate(model, glm::vec3(30.0f, 0.0f, 25.0f));
+		model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
 		//model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		AreaInf.RenderModel();
 
+		//##########################//
+		//#### Rejas del parque ####//
+		//##########################// Cada barra mide 0.188f
+		model = modelaux;
+		model = glm::translate(model, glm::vec3(55.0f, 0.0f, 45.0f));
+		model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
+		modelaux = model;
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Reja.RenderModel();
+
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -12.0f + 0.188f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Reja.RenderModel();
+
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -12.0f + 0.188f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Reja.RenderModel();
+
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -12.0f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Reja.RenderModel();
+
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -12.0f + 0.188f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Reja.RenderModel();
+
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -6.0f + 0.376f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Reja.RenderModel();
+		
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -12.0f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Reja.RenderModel();
+
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -12.0f + 0.188f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Reja.RenderModel();
+
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -12.0f + 0.188f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Reja.RenderModel();
+		
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -12.0f));
+		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Reja.RenderModel();
+
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -12.0f + 0.188f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Reja.RenderModel();
+
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -6.0f + 0.376f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Reja.RenderModel();
+		
+		
 		//######################//
 		//#### Laboratorio  ####//
 		//######################//
