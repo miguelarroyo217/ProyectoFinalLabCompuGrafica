@@ -758,21 +758,21 @@ int main()
 		model = glm::translate(model, glm::vec3(-40.0f, 0.0f, 40.0f));
 		model = glm::scale(model, glm::vec3(4.0f, 4.0f, 4.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Poste.RenderModel();
+		//Poste.RenderModel();
 
 		//Poste2
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(40.0f, 0.0f, 40.0f));
 		model = glm::scale(model, glm::vec3(4.0f, 4.0f, 4.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Poste.RenderModel();
+		//Poste.RenderModel();
 
 		//Poste3
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-40.0f, 0.0f, -50.0f));
 		model = glm::scale(model, glm::vec3(4.0f, 4.0f, 4.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Poste.RenderModel();
+		//Poste.RenderModel();
 
 		//Voltorb
 		model = glm::mat4(1.0);
