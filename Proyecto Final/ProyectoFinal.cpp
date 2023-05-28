@@ -92,6 +92,8 @@ Model LucBraDer;
 Model LucBraIzq;
 Model LucPierDer;
 Model LucPierIzq;
+
+
 Model CasaParque;
 Model Fuente;
 Model Dulceria;
@@ -99,6 +101,7 @@ Model AreaInf;
 Model Reja;
 
 Model Farola;
+Model Poste;
 Model CentroPokemon;
 Model Laboratorio;
 Model Gym;
@@ -307,18 +310,23 @@ int main()
 	LucPierDer.LoadModel("Models/LucarioPierDer.obj");
 	LucPierIzq = Model();
 	LucPierIzq.LoadModel("Models/LucarioPierIzq.obj");
+
 	CasaParque = Model();
-	CasaParque.LoadModel("Models/CasaParque.fbx");
+	CasaParque.LoadModel("Models/CasaParque.obj");
 	Fuente = Model();
-	Fuente.LoadModel("Models/FuenteParque.fbx");
+	Fuente.LoadModel("Models/FuenteParque.obj");
 	Dulceria = Model();
-	Dulceria.LoadModel("Models/SnackArea.fbx");
+	Dulceria.LoadModel("Models/SnackArea.obj");
 	AreaInf = Model();
 	AreaInf.LoadModel("Models/AreaInfantil.obj");
+	Reja = Model();
+	Reja.LoadModel("Models/Reja.obj");
 
 	// EDIFICACIONES
 	Farola = Model();
 	Farola.LoadModel("Models/Farola.obj");
+	Poste = Model();
+	Poste.LoadModel("Models/Poste.obj");
 	Laboratorio = Model();
 	Laboratorio.LoadModel("Models/LabPokemon.fbx");
 	CentroPokemon = Model();
@@ -371,6 +379,23 @@ int main()
 	//contador de luces puntuales
 	unsigned int pointLightCount = 0;
 	//Declaración de primer luz puntual
+	pointLights[0] = PointLight(1.0f, 1.0f, 0.0f,
+		0.3f, 3.0f,
+		-40.0f, 19.0f, 40.0f,
+		1.0f, 0.5f, 0.0f);
+	pointLightCount++;
+
+	pointLights[1] = PointLight(1.0f, 1.0f, 0.0f,
+		0.3f, 3.0f,
+		40.0f, 19.0f, 40.0f,
+		1.0f, 0.5f, 0.0f);
+	pointLightCount++;
+
+	pointLights[2] = PointLight(1.0f, 1.0f, 0.0f,
+		0.3f, 3.0f,
+		-40.0f, 19.0f, -50.0f,
+		1.0f, 0.5f, 0.0f);
+	pointLightCount++;
 
 	unsigned int spotLightCount = 0;
 	//linterna
@@ -419,7 +444,7 @@ int main()
 	movLuc = 0.0;
 	movLucOffset = 0.1;
 	rotLuc = 0;
-	rotLucOffset = 1;
+	rotLucOffset = 2;
 	avanza = false;
 	gira = false;
 	
@@ -448,29 +473,32 @@ int main()
 		}
 
 		//Animacion Onix
-		if (movOnix > -85.5f && avanzaOnix == false && mainWindow.getBanOnAnim() == true) {
+		if (movOnix > -90.5f && avanzaOnix == false && mainWindow.getBanOnAnim() == true) {
 			movOnix -= movOnixOffset * deltaTime;
 			rotOnix += rotOnixOffset * deltaTime;
-			if (movOnix > -91.0f && movOnix < -90.0f) {}
-			//avanzaOnix = true;
+			if (movOnix > -91.0f && movOnix < -90.0f) {
+				avanzaOnix = true;
+			}
 		}
-		/*else if (movOnix < 0.5f && avanzaOnix == true && mainWindow.getBanOnAnim() == true) {
+		else if (movOnix < 90.5f && avanzaOnix == true && mainWindow.getBanOnAnim() == true) {
 			movOnix += movOnixOffset * deltaTime;
 			rotOnix -= rotVolOffset * deltaTime;
-			if (movOnix < 1.0f && movVol > 0.0f)
+			if (movOnix < 91.0f && movOnix > 90.0f)
 				avanzaOnix = false;
-		}*/
+		}
 
 		//Animación Avatar
 		if (rotLuc < 20 && gira == false && mainWindow.getBanOnAnim() == true) {
-			rotLuc += movLucOffset * deltaTime;
-			if (rotLuc < 21 && movLuc > 19) {
-				rotLuc -= rotLucOffset * deltaTime;
+			rotLuc += rotLucOffset * deltaTime;
+			if (rotLuc < 21 && rotLuc > 19) {
 				gira = true;
 			}
 		}
 		else if (rotLuc > -20 && gira == true && mainWindow.getBanOnAnim() == true) {
-			rotLuc += movLucOffset * deltaTime;
+			rotLuc += rotLucOffset * deltaTime;
+			if (rotLuc < -19 && rotLuc > -21) {
+				gira = false;
+			}
 		}
 
 		if (movLuc < 100.5f && avanza == false && mainWindow.getBanOnAnim() == true) {
@@ -501,15 +529,15 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		if (mainWindow.getBanDia() == 1) {
 			skyboxDia.DrawSkybox(camera.calculateViewMatrix(), projection);
-			spotLights[0].SetFlash(glm::vec3(0.0f, 20.0f, -48.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-			spotLights[1].SetFlash(glm::vec3(0.0f, 20.0f, -48.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-			spotLights[2].SetFlash(glm::vec3(0.0f, 20.0f, -48.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+			spotLights[0].SetFlash(glm::vec3(0.0f, 20.0f, -68.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+			spotLights[1].SetFlash(glm::vec3(-48.0f, 20.0f, -10.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+			spotLights[2].SetFlash(glm::vec3(59.0f, 20.0f, -2.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 		}
 		else {
 			skyboxNoche.DrawSkybox(camera.calculateViewMatrix(), projection);
-			spotLights[0].SetFlash(glm::vec3(0.0f, 20.0f, -48.0f), glm::vec3(0.0f, -1.0f, 0.0f));
-			spotLights[1].SetFlash(glm::vec3(-48.0f, 20.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f));
-			spotLights[2].SetFlash(glm::vec3(59.0f, 20.0f, 8.0f), glm::vec3(0.0f, -1.0f, 0.0f));
+			spotLights[0].SetFlash(glm::vec3(0.0f, 20.0f, -68.0f), glm::vec3(0.0f, -1.0f, 0.0f));
+			spotLights[1].SetFlash(glm::vec3(-48.0f, 20.0f, -10.0f), glm::vec3(0.0f, -1.0f, 0.0f));
+			spotLights[2].SetFlash(glm::vec3(59.0f, 20.0f, -2.0f), glm::vec3(0.0f, -1.0f, 0.0f));
 		}
 		
 		shaderList[0].UseShader();
@@ -543,8 +571,8 @@ int main()
 
 		//Piso
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(14.0f, 1.0f, 14.0f));
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -10.0f));
+		model = glm::scale(model, glm::vec3(13.0f, 1.0f, 14.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
 		glUniform2fv(uniformTextureOffset, 1, glm::value_ptr(toffset));
@@ -558,7 +586,7 @@ int main()
 
 		//Pueblo
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(1.0f, 0.0f, -10.0f));
 		model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
 		//model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
@@ -590,7 +618,7 @@ int main()
 
 		//Arboles
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(5.0f, 0.0f, -115.0f));
+		model = glm::translate(model, glm::vec3(5.0f, 0.0f, -140.0f));
 		model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
 		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
@@ -598,7 +626,7 @@ int main()
 
 		//Farola1
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.0f, 0.1f, -60.0f));
+		model = glm::translate(model, glm::vec3(0.0f, 0.1f, -80.0f));
 		model = glm::scale(model, glm::vec3(4.0f, 4.0f, 4.0f));
 		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
@@ -606,7 +634,7 @@ int main()
 
 		//Farola2
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-60.0f, 0.1f, 0.0f));
+		model = glm::translate(model, glm::vec3(-60.0f, 0.1f, -10.0f));
 		model = glm::scale(model, glm::vec3(4.0f, 4.0f, 4.0f));
 		//model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
@@ -614,11 +642,32 @@ int main()
 
 		//Farola3
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(70.0f, 0.1f, 8.0f));
+		model = glm::translate(model, glm::vec3(70.0f, 0.1f, -2.0f));
 		model = glm::scale(model, glm::vec3(4.0f, 4.0f, 4.0f));
 		model = glm::rotate(model, 180 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Farola.RenderModel();
+
+		//Poste1
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-40.0f, 0.0f, 40.0f));
+		model = glm::scale(model, glm::vec3(4.0f, 4.0f, 4.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Poste.RenderModel();
+
+		//Poste2
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(40.0f, 0.0f, 40.0f));
+		model = glm::scale(model, glm::vec3(4.0f, 4.0f, 4.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Poste.RenderModel();
+
+		//Poste3
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-40.0f, 0.0f, -50.0f));
+		model = glm::scale(model, glm::vec3(4.0f, 4.0f, 4.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Poste.RenderModel();
 
 		//Voltorb
 		model = glm::mat4(1.0);
@@ -638,7 +687,7 @@ int main()
 
 		//Onix
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(movOnix, 0.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(movOnix, 0.0f, -70.0f));
 		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
 		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, rotOnix * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
@@ -664,7 +713,7 @@ int main()
 		//Cola
 		model = glm::mat4(1.0);
 		model = modelLuc;
-		//model = glm::rotate(model, 45 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, rotLuc * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		LucCola.RenderModel();
 
